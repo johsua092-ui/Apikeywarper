@@ -1,4 +1,4 @@
-import { getRoute, UPSTREAMS, type Usage } from "@/lib/auth";
+import { getRoute, UPSTREAMS } from "@/lib/auth";
 import { countTokens } from "./tokens";
 
 type Upstream = "freemodel" | "openrouter";
