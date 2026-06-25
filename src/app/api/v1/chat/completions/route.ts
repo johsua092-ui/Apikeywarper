@@ -1,18 +1,19 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { validateApiKey } from "@/lib/auth";
 import { proxyChatCompletion } from "@/lib/proxy/upstream";
 import { adminDb } from "@/lib/firebase/admin";
 import { FieldValue } from "firebase-admin/firestore";
+import { corsResponse, corsOptions } from "@/lib/cors";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 30;
 
 export async function POST(req: NextRequest) {
   const authHeader = req.headers.get("authorization") || "";
   const token = authHeader.replace(/^Bearer\s+/i, "");
 
   if (!token) {
-    return NextResponse.json(
+    return corsResponse(
       { error: { message: "Unauthorized — missing API key", type: "auth_error" } },
       { status: 401 }
     );
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
 
   const user = await validateApiKey(token);
   if (!user) {
-    return NextResponse.json(
+    return corsResponse(
       { error: { message: "API key tidak valid", type: "auth_error" } },
       { status: 401, headers: { "WWW-Authenticate": "Bearer" } }
     );
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json().catch(() => null);
   if (!body || !body.model || !body.messages) {
-    return NextResponse.json(
+    return corsResponse(
       {
         error: {
           message: "Body harus berisi 'model' (string) dan 'messages' (array)",
@@ -44,7 +45,7 @@ export async function POST(req: NextRequest) {
   const userRef = adminDb.collection("users").doc(user.uid);
   const userSnap = await userRef.get();
   if (!userSnap.exists) {
-    return NextResponse.json(
+    return corsResponse(
       { error: { message: "User tidak ditemukan", type: "auth_error" } },
       { status: 404 }
     );
@@ -55,12 +56,12 @@ export async function POST(req: NextRequest) {
   const result = await proxyChatCompletion(model, messages, { stream: false, ...extraBody });
 
   if (result.status !== 200) {
-    return NextResponse.json(result.body, { status: result.status });
+    return corsResponse(result.body, { status: result.status });
   }
 
   const { promptTokens, completionTokens, totalTokens } = result.usage;
   if (totalTokens > tokenBalance) {
-    return NextResponse.json(
+    return corsResponse(
       {
         error: {
           message: `Saldo token tidak mencukupi. Dibutuhkan ${totalTokens}, saldo: ${tokenBalance}`,
@@ -92,7 +93,7 @@ export async function POST(req: NextRequest) {
 
   const data = result.body as Record<string, unknown>;
 
-  const response = NextResponse.json({
+  return corsResponse({
     id: data.id ?? `chatcmpl-${usageId}`,
     object: "chat.completion",
     created: Math.floor(Date.now() / 1000),
@@ -104,16 +105,8 @@ export async function POST(req: NextRequest) {
       total_tokens: totalTokens,
     },
   });
-
-  return response;
 }
 
 export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 204,
-    headers: {
-      Allow: "POST, OPTIONS",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-    },
-  });
+  return corsOptions("POST, OPTIONS");
 }

@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getRoute, MODEL_ROUTES } from "@/lib/auth";
+import { NextResponse } from "next/server";
+import { MODEL_ROUTES } from "@/lib/auth";
+import { corsResponse, corsOptions } from "@/lib/cors";
 
 export async function GET() {
   const models = Object.entries(MODEL_ROUTES).map(([id, route]) => ({
@@ -10,9 +11,9 @@ export async function GET() {
     permission: [],
   }));
 
-  return NextResponse.json({ object: "list", data: models });
+  return corsResponse({ object: "list", data: models });
 }
 
 export async function OPTIONS() {
-  return new NextResponse(null, { status: 204 });
+  return corsOptions("GET, OPTIONS");
 }
