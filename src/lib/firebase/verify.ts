@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { auth } from "firebase-admin/auth";
+import { NextRequest } from "next/server";
+import { getAuth } from "firebase-admin/auth";
 
 export async function verifyFirebaseToken(req: NextRequest): Promise<string | null> {
   const authHeader = req.headers.get("authorization");
@@ -9,7 +9,7 @@ export async function verifyFirebaseToken(req: NextRequest): Promise<string | nu
   if (!token) return null;
 
   try {
-    const decoded = await auth().verifyIdToken(token);
+    const decoded = await getAuth().verifyIdToken(token);
     return decoded.uid;
   } catch {
     return null;
