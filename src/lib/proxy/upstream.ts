@@ -63,7 +63,6 @@ export async function proxyChatCompletion(
 
   const responseBody = await response.json();
 
-  // Extract usage from response, or estimate
   let promptTokens = responseBody.usage?.prompt_tokens ?? countTokens(JSON.stringify(messages));
   let completionTokens =
     responseBody.usage?.completion_tokens ??

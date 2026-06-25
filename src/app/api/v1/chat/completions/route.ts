@@ -18,7 +18,6 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Validate key
   const user = await validateApiKey(token);
   if (!user) {
     return NextResponse.json(
@@ -42,7 +41,6 @@ export async function POST(req: NextRequest) {
 
   const { model, messages, stream, ...extraBody } = body;
 
-  // Cek saldo user
   const userRef = adminDb.collection("users").doc(user.uid);
   const userSnap = await userRef.get();
   if (!userSnap.exists) {
@@ -54,14 +52,12 @@ export async function POST(req: NextRequest) {
 
   const tokenBalance = userSnap.data()?.tokenBalance ?? 0;
 
-  // Proxy ke upstream
   const result = await proxyChatCompletion(model, messages, { stream: false, ...extraBody });
 
   if (result.status !== 200) {
     return NextResponse.json(result.body, { status: result.status });
   }
 
-  // Hitung biaya token
   const { promptTokens, completionTokens, totalTokens } = result.usage;
   if (totalTokens > tokenBalance) {
     return NextResponse.json(
@@ -75,7 +71,6 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Kurangi saldo + catat usage di Firestore (transaksi atomic)
   const usageId = adminDb.collection("_").doc().id;
   const batch = adminDb.batch();
   batch.update(userRef, {
@@ -95,7 +90,6 @@ export async function POST(req: NextRequest) {
   );
   await batch.commit();
 
-  // Transform response ke OpenAI format
   const data = result.body as Record<string, unknown>;
 
   const response = NextResponse.json({

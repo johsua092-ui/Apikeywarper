@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase/admin";
+import { FieldValue } from "firebase-admin/firestore";
 import { verifyFirebaseToken } from "@/lib/firebase/verify";
 
 async function getUid(req: NextRequest): Promise<string | null> {
@@ -44,7 +45,7 @@ export async function POST(req: NextRequest) {
     .set({
       prefix,
       keyHash,
-      createdAt: adminDb.FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
       active: true,
     });
 

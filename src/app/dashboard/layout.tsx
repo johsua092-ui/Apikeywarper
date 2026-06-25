@@ -29,7 +29,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (loading)
     return (
-      <div className="flex min-h-screen items-center justify-center text-zinc-500">
+      <div className="flex min-h-screen items-center justify-center text-stone-600">
         Loading...
       </div>
     );
@@ -38,17 +38,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex min-h-screen">
-      <aside className="flex w-56 flex-col border-r border-zinc-800 bg-zinc-950 p-4">
-        <h2 className="mb-6 text-lg font-bold text-indigo-400">Linkey</h2>
-        <nav className="flex flex-col gap-1">
+      <aside className="flex w-56 flex-col border-r border-stone-800 bg-stone-950 p-4">
+        <h2 className="mb-6 text-lg font-bold tracking-tight text-stone-100">
+          Linkey
+        </h2>
+        <nav className="flex flex-col gap-0.5">
           {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className={`rounded px-3 py-2 text-sm transition ${
+              className={`rounded-md px-3 py-2 text-sm transition ${
                 pathname === item.href
-                  ? "bg-zinc-800 text-white"
-                  : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                  ? "bg-stone-800 text-stone-100"
+                  : "text-stone-500 hover:bg-stone-900 hover:text-stone-300"
               }`}
             >
               {item.label}
@@ -58,13 +60,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <div className="mt-auto">
           <button
             onClick={() => signOut(auth)}
-            className="w-full rounded px-3 py-2 text-left text-sm text-zinc-500 transition hover:bg-zinc-900 hover:text-zinc-300"
+            className="w-full rounded-md px-3 py-2 text-left text-sm text-stone-600 transition hover:bg-stone-900 hover:text-stone-400"
           >
             Keluar
           </button>
         </div>
       </aside>
-      <main className="flex-1 bg-zinc-900 p-8">{children}</main>
+      <main className="flex-1 bg-stone-950 p-8">{children}</main>
     </div>
   );
 }

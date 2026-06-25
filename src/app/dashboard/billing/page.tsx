@@ -41,27 +41,27 @@ export default function BillingPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Billing</h1>
-      <p className="mt-1 text-sm text-zinc-500">
+      <h1 className="text-2xl font-bold tracking-tight text-stone-100">Billing</h1>
+      <p className="mt-1 text-sm text-stone-500">
         Riwayat penambahan saldo. Saldo ditambahkan oleh admin langsung dari database.
       </p>
 
       {txs.length === 0 ? (
-        <p className="mt-6 text-zinc-500">Belum ada transaksi.</p>
+        <p className="mt-6 text-stone-600">Belum ada transaksi.</p>
       ) : (
         <div className="mt-4 space-y-2">
           {txs.map((tx) => (
             <div
               key={tx.id}
-              className="flex items-center justify-between rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-sm"
+              className="flex items-center justify-between rounded-lg border border-stone-800 bg-stone-900 p-3 text-sm"
             >
               <div>
-                <p className="font-medium text-green-400">
+                <p className="font-medium text-emerald-400">
                   +{tx.amount.toLocaleString()} token
                 </p>
-                {tx.note && <p className="text-xs text-zinc-500">{tx.note}</p>}
+                {tx.note && <p className="text-xs text-stone-600">{tx.note}</p>}
               </div>
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-stone-600">
                 {new Date(tx.timestamp).toLocaleDateString("id-ID")}
               </p>
             </div>

@@ -33,32 +33,33 @@ export default function UsagePage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Usage</h1>
-      <p className="mt-1 text-sm text-zinc-500">
-        Total token dipakai: <span className="font-semibold text-white">{totalTokens.toLocaleString()}</span>
+      <h1 className="text-2xl font-bold tracking-tight text-stone-100">Usage</h1>
+      <p className="mt-1 text-sm text-stone-500">
+        Total token dipakai:{" "}
+        <span className="font-semibold text-stone-200">{totalTokens.toLocaleString()}</span>
       </p>
 
       {loading ? (
-        <p className="mt-6 text-zinc-500">Loading...</p>
+        <p className="mt-6 text-stone-600">Loading...</p>
       ) : usage.length === 0 ? (
-        <p className="mt-6 text-zinc-500">Belum ada pemakaian.</p>
+        <p className="mt-6 text-stone-600">Belum ada pemakaian.</p>
       ) : (
         <div className="mt-4 space-y-2">
           {usage.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-sm"
+              className="flex items-center justify-between rounded-lg border border-stone-800 bg-stone-900 p-3 text-sm"
             >
               <div>
-                <p className="font-medium">{item.model}</p>
-                <p className="text-xs text-zinc-500">
+                <p className="font-medium text-stone-200">{item.model}</p>
+                <p className="text-xs text-stone-600">
                   {new Date(item.timestamp).toLocaleString("id-ID")}
                 </p>
               </div>
-              <div className="text-right text-xs text-zinc-400">
+              <div className="text-right text-xs text-stone-500">
                 <p>Prompt: {item.promptTokens.toLocaleString()}</p>
                 <p>Completion: {item.completionTokens.toLocaleString()}</p>
-                <p className="font-medium text-white">Total: {item.totalTokens.toLocaleString()}</p>
+                <p className="font-medium text-stone-200">Total: {item.totalTokens.toLocaleString()}</p>
               </div>
             </div>
           ))}

@@ -19,7 +19,6 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
-      // Create user doc with initial token balance 0
       await setDoc(doc(db, "users", cred.user.uid), {
         email: cred.user.email,
         tokenBalance: 0,
@@ -40,15 +39,19 @@ export default function RegisterPage() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
-        <h1 className="text-2xl font-bold">Daftar Linkey</h1>
-        {error && <p className="rounded bg-red-900/50 p-2 text-sm text-red-300">{error}</p>}
+        <h1 className="text-2xl font-bold tracking-tight text-stone-100">Daftar Linkey</h1>
+        {error && (
+          <p className="rounded-lg border border-red-900/50 bg-red-950 p-2 text-sm text-red-400">
+            {error}
+          </p>
+        )}
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full rounded border border-zinc-700 bg-zinc-900 px-4 py-2 outline-none focus:border-indigo-500"
+          className="w-full rounded-lg border border-stone-800 bg-stone-900 px-4 py-2 text-stone-200 outline-none transition placeholder:text-stone-600 focus:border-indigo-700"
         />
         <input
           type="password"
@@ -57,16 +60,16 @@ export default function RegisterPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={6}
-          className="w-full rounded border border-zinc-700 bg-zinc-900 px-4 py-2 outline-none focus:border-indigo-500"
+          className="w-full rounded-lg border border-stone-800 bg-stone-900 px-4 py-2 text-stone-200 outline-none transition placeholder:text-stone-600 focus:border-indigo-700"
         />
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded bg-indigo-600 py-2 font-medium transition hover:bg-indigo-500 disabled:opacity-50"
+          className="w-full rounded-lg bg-indigo-600 py-2 text-sm font-medium text-white transition hover:bg-indigo-500 disabled:opacity-50"
         >
           {loading ? "Memproses..." : "Daftar"}
         </button>
-        <p className="text-center text-sm text-zinc-500">
+        <p className="text-center text-sm text-stone-600">
           Sudah punya akun?{" "}
           <a href="/login" className="text-indigo-400 hover:underline">
             Masuk

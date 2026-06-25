@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Linkey — Unified AI API",
-  description: "Akses model AI terbaik via satu API key. GPT, Claude, dan lainnya.",
+  description: "Akses model AI terbaik via satu API key.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

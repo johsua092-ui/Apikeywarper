@@ -32,15 +32,19 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
-        <h1 className="text-2xl font-bold">Masuk Linkey</h1>
-        {error && <p className="rounded bg-red-900/50 p-2 text-sm text-red-300">{error}</p>}
+        <h1 className="text-2xl font-bold tracking-tight text-stone-100">Masuk Linkey</h1>
+        {error && (
+          <p className="rounded-lg border border-red-900/50 bg-red-950 p-2 text-sm text-red-400">
+            {error}
+          </p>
+        )}
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full rounded border border-zinc-700 bg-zinc-900 px-4 py-2 outline-none focus:border-indigo-500"
+          className="w-full rounded-lg border border-stone-800 bg-stone-900 px-4 py-2 text-stone-200 outline-none transition placeholder:text-stone-600 focus:border-indigo-700"
         />
         <input
           type="password"
@@ -48,16 +52,16 @@ export default function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="w-full rounded border border-zinc-700 bg-zinc-900 px-4 py-2 outline-none focus:border-indigo-500"
+          className="w-full rounded-lg border border-stone-800 bg-stone-900 px-4 py-2 text-stone-200 outline-none transition placeholder:text-stone-600 focus:border-indigo-700"
         />
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded bg-indigo-600 py-2 font-medium transition hover:bg-indigo-500 disabled:opacity-50"
+          className="w-full rounded-lg bg-indigo-600 py-2 text-sm font-medium text-white transition hover:bg-indigo-500 disabled:opacity-50"
         >
           {loading ? "Memproses..." : "Masuk"}
         </button>
-        <p className="text-center text-sm text-zinc-500">
+        <p className="text-center text-sm text-stone-600">
           Belum punya akun?{" "}
           <a href="/register" className="text-indigo-400 hover:underline">
             Daftar
