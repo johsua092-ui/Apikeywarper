@@ -15,7 +15,11 @@ const MODEL_ROUTES: Record<
   "claude-haiku-3-5": { upstream: "openrouter", upstreamModel: "anthropic/claude-haiku-latest", costPer1K: 0.01 },
 };
 
-type Route = (typeof MODEL_ROUTES)[keyof MODEL_ROUTES] | null;
+type Route = {
+  upstream: "freemodel" | "openrouter";
+  upstreamModel: string;
+  costPer1K: number;
+} | null;
 export function getRoute(model: string): Route {
   return MODEL_ROUTES[model] ?? null;
 }
